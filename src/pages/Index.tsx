@@ -42,6 +42,8 @@ const Index = () => {
       <Navigation 
         userRole={userRole} 
         onEmergencyClick={handleEmergencyClick}
+        onNavigate={setCurrentView}
+        currentView={currentView}
       />
       
       {renderCurrentView()}

@@ -5,15 +5,20 @@ import { Heart, Menu, User, LogOut } from 'lucide-react';
 interface NavigationProps {
   userRole?: 'student' | 'counselor' | 'admin' | null;
   onEmergencyClick: () => void;
+  onNavigate?: (view: 'landing' | 'dashboard' | 'forum' | 'resources') => void;
+  currentView?: string;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ userRole, onEmergencyClick }) => {
+const Navigation: React.FC<NavigationProps> = ({ userRole, onEmergencyClick, onNavigate, currentView }) => {
   return (
     <nav className="bg-card soul-shadow-gentle border-b border-border">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
+          <div 
+            className="flex items-center space-x-2 cursor-pointer" 
+            onClick={() => onNavigate?.('landing')}
+          >
             <div className="w-8 h-8 bg-gradient-to-r from-soul-blue to-soul-mint rounded-full flex items-center justify-center">
               <Heart className="w-5 h-5 text-white" />
             </div>
@@ -24,39 +29,54 @@ const Navigation: React.FC<NavigationProps> = ({ userRole, onEmergencyClick }) =
 
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-6">
-            <a href="#home" className="text-foreground hover:text-soul-blue soul-transition">
+            <button 
+              onClick={() => onNavigate?.('landing')} 
+              className={`text-foreground hover:text-soul-blue soul-transition ${currentView === 'landing' ? 'text-soul-blue font-semibold' : ''}`}
+            >
               Home
-            </a>
+            </button>
             {userRole === 'student' && (
               <>
-                <a href="#dashboard" className="text-foreground hover:text-soul-blue soul-transition">
+                <button 
+                  onClick={() => onNavigate?.('dashboard')} 
+                  className={`text-foreground hover:text-soul-blue soul-transition ${currentView === 'dashboard' ? 'text-soul-blue font-semibold' : ''}`}
+                >
                   Dashboard
-                </a>
-                <a href="#resources" className="text-foreground hover:text-soul-blue soul-transition">
+                </button>
+                <button 
+                  onClick={() => onNavigate?.('resources')} 
+                  className={`text-foreground hover:text-soul-blue soul-transition ${currentView === 'resources' ? 'text-soul-blue font-semibold' : ''}`}
+                >
                   Resources
-                </a>
-                <a href="#forum" className="text-foreground hover:text-soul-blue soul-transition">
+                </button>
+                <button 
+                  onClick={() => onNavigate?.('forum')} 
+                  className={`text-foreground hover:text-soul-blue soul-transition ${currentView === 'forum' ? 'text-soul-blue font-semibold' : ''}`}
+                >
                   Forum
-                </a>
-                <a href="#appointments" className="text-foreground hover:text-soul-blue soul-transition">
+                </button>
+                <button className="text-foreground hover:text-soul-blue soul-transition">
                   Book Session
-                </a>
+                </button>
               </>
             )}
             {userRole === 'counselor' && (
               <>
-                <a href="#dashboard" className="text-foreground hover:text-soul-blue soul-transition">
+                <button 
+                  onClick={() => onNavigate?.('dashboard')} 
+                  className={`text-foreground hover:text-soul-blue soul-transition ${currentView === 'dashboard' ? 'text-soul-blue font-semibold' : ''}`}
+                >
                   Dashboard
-                </a>
-                <a href="#appointments" className="text-foreground hover:text-soul-blue soul-transition">
+                </button>
+                <button className="text-foreground hover:text-soul-blue soul-transition">
                   Appointments
-                </a>
+                </button>
               </>
             )}
             {userRole === 'admin' && (
-              <a href="#admin" className="text-foreground hover:text-soul-blue soul-transition">
+              <button className="text-foreground hover:text-soul-blue soul-transition">
                 Admin Dashboard
-              </a>
+              </button>
             )}
           </div>
 
