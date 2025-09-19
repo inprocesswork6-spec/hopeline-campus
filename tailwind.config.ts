@@ -13,7 +13,25 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        inter: ['Inter', 'sans-serif'],
+      },
       colors: {
+        /* Soul Sync Brand Colors */
+        'soul-blue': {
+          DEFAULT: 'hsl(var(--soul-blue))',
+          light: 'hsl(var(--soul-blue-light))',
+          dark: 'hsl(var(--soul-blue-dark))',
+        },
+        'soul-mint': {
+          DEFAULT: 'hsl(var(--soul-mint))',
+          light: 'hsl(var(--soul-mint-light))',
+        },
+        'soul-lavender': 'hsl(var(--soul-lavender))',
+        'soul-gray': {
+          DEFAULT: 'hsl(var(--soul-gray))',
+          light: 'hsl(var(--soul-gray-light))',
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
