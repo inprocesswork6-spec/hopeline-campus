@@ -6,14 +6,12 @@ interface NavigationProps {
   onEmergencyClick: () => void;
   onNavigate?: (view: 'landing' | 'dashboard' | 'forum' | 'resources') => void;
   currentView?: string;
-  onLogout?: () => void;
 }
 const Navigation: React.FC<NavigationProps> = ({
   userRole,
   onEmergencyClick,
   onNavigate,
-  currentView,
-  onLogout
+  currentView
 }) => {
   return <nav className="bg-card soul-shadow-gentle border-b border-border">
       <div className="container mx-auto px-4 py-3">
@@ -72,7 +70,7 @@ const Navigation: React.FC<NavigationProps> = ({
                   <User className="w-4 h-4 mr-1" />
                   {userRole === 'student' ? 'Anonymous' : 'Profile'}
                 </Button>
-                <Button variant="ghost" size="sm" onClick={onLogout}>
+                <Button variant="ghost" size="sm">
                   <LogOut className="w-4 h-4" />
                 </Button>
               </div> : <Button variant="default" size="sm" className="bg-soul-blue hover:bg-soul-blue-dark">

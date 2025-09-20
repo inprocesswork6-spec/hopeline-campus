@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Heart, Shield, Users, Brain, BookOpen, MessageCircle, ArrowRight } from 'lucide-react';
@@ -9,12 +8,6 @@ interface LandingPageProps {
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
-  const navigate = useNavigate();
-
-  const handleAuthRedirect = () => {
-    navigate('/auth');
-  };
-
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -43,11 +36,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Button 
                 size="lg" 
-                onClick={handleAuthRedirect}
+                onClick={onGetStarted}
                 className="bg-soul-blue hover:bg-soul-blue-dark text-lg px-8 py-6 soul-shadow-soft hover:soul-shadow-floating soul-transition-bounce"
               >
                 <Heart className="w-5 h-5 mr-2" />
-                Get Started
+                Enter Anonymously
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
               
@@ -197,7 +190,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
             </p>
             <Button 
               size="lg"
-              onClick={handleAuthRedirect}
+              onClick={onGetStarted}
               className="bg-white text-soul-blue hover:bg-gray-100 text-lg px-8 py-6 soul-shadow-floating hover:soul-shadow-soft soul-transition-bounce"
             >
               Start Your Journey
