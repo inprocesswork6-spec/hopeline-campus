@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 import Navigation from '@/components/Navigation';
 import LandingPage from '@/components/LandingPage';
 import StudentDashboard from '@/components/StudentDashboard';
@@ -8,14 +10,18 @@ import EmergencyModal from '@/components/EmergencyModal';
 import FloatingEmergencyButton from '@/components/FloatingEmergencyButton';
 
 const Index = () => {
+  const navigate = useNavigate();
+  const { user, userRole, signOut, loading } = useAuth();
   const [currentView, setCurrentView] = useState<'landing' | 'dashboard' | 'forum' | 'resources'>('landing');
-  const [userRole, setUserRole] = useState<'student' | 'counselor' | 'admin' | null>(null);
   const [isEmergencyModalOpen, setIsEmergencyModalOpen] = useState(false);
 
   const handleGetStarted = () => {
-    // Simulate anonymous authentication
-    setUserRole('student');
-    setCurrentView('dashboard');
+    navigate('/auth');
+  };
+
+  const handleLogout = async () => {
+    await signOut();
+    setCurrentView('landing');
   };
 
   const handleEmergencyClick = () => {
@@ -23,9 +29,13 @@ const Index = () => {
   };
 
   const renderCurrentView = () => {
+    // Show landing page if not authenticated
+    if (!user) {
+      return <LandingPage onGetStarted={handleGetStarted} />;
+    }
+
+    // Show appropriate view based on authentication and current selection
     switch (currentView) {
-      case 'landing':
-        return <LandingPage onGetStarted={handleGetStarted} />;
       case 'dashboard':
         return <StudentDashboard />;
       case 'forum':
@@ -33,9 +43,20 @@ const Index = () => {
       case 'resources':
         return <ResourceHub />;
       default:
-        return <LandingPage onGetStarted={handleGetStarted} />;
+        return <StudentDashboard />; // Default to dashboard for authenticated users
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-soul-blue border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -44,6 +65,7 @@ const Index = () => {
         onEmergencyClick={handleEmergencyClick}
         onNavigate={setCurrentView}
         currentView={currentView}
+        onLogout={handleLogout}
       />
       
       {renderCurrentView()}
@@ -55,8 +77,8 @@ const Index = () => {
         onClose={() => setIsEmergencyModalOpen(false)} 
       />
 
-      {/* Navigation Helper - In real app this would be proper routing */}
-      {userRole === 'student' && (
+      {/* Navigation Helper - Show only for authenticated users */}
+      {user && userRole && (
         <div className="fixed bottom-6 left-6 z-40 flex flex-col gap-2">
           <button
             onClick={() => setCurrentView('dashboard')}

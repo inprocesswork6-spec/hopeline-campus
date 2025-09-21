@@ -2,16 +2,18 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart, Menu, User, LogOut } from 'lucide-react';
 interface NavigationProps {
-  userRole?: 'student' | 'counselor' | 'admin' | null;
+  userRole?: 'user' | 'counselor' | 'admin' | null;
   onEmergencyClick: () => void;
   onNavigate?: (view: 'landing' | 'dashboard' | 'forum' | 'resources') => void;
   currentView?: string;
+  onLogout?: () => void;
 }
 const Navigation: React.FC<NavigationProps> = ({
   userRole,
   onEmergencyClick,
   onNavigate,
-  currentView
+  currentView,
+  onLogout
 }) => {
   return <nav className="bg-card soul-shadow-gentle border-b border-border">
       <div className="container mx-auto px-4 py-3">
@@ -29,7 +31,7 @@ const Navigation: React.FC<NavigationProps> = ({
             <button onClick={() => onNavigate?.('landing')} className={`text-foreground hover:text-soul-blue soul-transition ${currentView === 'landing' ? 'text-soul-blue font-semibold' : ''}`}>
               Home
             </button>
-            {userRole === 'student' && <>
+            {userRole === 'user' && <>
                 <button onClick={() => onNavigate?.('dashboard')} className={`text-foreground hover:text-soul-blue soul-transition ${currentView === 'dashboard' ? 'text-soul-blue font-semibold' : ''}`}>
                   Dashboard
                 </button>
@@ -68,12 +70,17 @@ const Navigation: React.FC<NavigationProps> = ({
             {userRole ? <div className="flex items-center space-x-2">
                 <Button variant="ghost" size="sm">
                   <User className="w-4 h-4 mr-1" />
-                  {userRole === 'student' ? 'Anonymous' : 'Profile'}
+                  {userRole === 'user' ? 'Anonymous' : 'Profile'}
                 </Button>
-                <Button variant="ghost" size="sm">
+                <Button variant="ghost" size="sm" onClick={onLogout}>
                   <LogOut className="w-4 h-4" />
                 </Button>
-              </div> : <Button variant="default" size="sm" className="bg-soul-blue hover:bg-soul-blue-dark">
+              </div> : <Button 
+                variant="default" 
+                size="sm" 
+                className="bg-soul-blue hover:bg-soul-blue-dark"
+                onClick={() => onNavigate?.('landing')}
+              >
                 Get Started
               </Button>}
 
